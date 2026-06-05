@@ -9,7 +9,7 @@ products.forEach((product) => {
         </div>
 
         <div class="product-name limit-text-to-2-lines">
-            ${product.name}}
+            ${product.name}
         </div>
 
         <div class="product-rating-container">
@@ -45,7 +45,7 @@ products.forEach((product) => {
                     Added
             </div>
 
-            <button class="add-to-cart-button button-primary js-add-to-cart-button" data-id="${product.id}">
+            <button class="add-to-cart-button button-primary js-add-to-cart-button" data-product-id="${product.id}">
                 Add to Cart
             </button>
      </div>`
@@ -71,9 +71,14 @@ document.querySelectorAll('.js-add-to-cart-button')
                 cart.push({
                     productId: productId,
                     quantity: 1
-                 });
+            });
 }
-            console.log(cart);
+            let cartQuantity = 0;
+            cart.forEach((item) => {
+                cartQuantity += item.quantity;
+            });
+
+            document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
         });
 
     })
