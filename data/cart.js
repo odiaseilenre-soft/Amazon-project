@@ -32,13 +32,13 @@ export function addToCart(productId) {
     } else {
         cart.push(
             {
-            productId: productId,
-            quantity: quantity
+            productId,
+            quantity
             }
         );
     }
+
     saveToStorage();
-     console.log(cart);
 }
 
 export function removeFromCart(productId) {
@@ -50,6 +50,5 @@ export function removeFromCart(productId) {
         }
     });
     cart = newCart;
-    console.log(cart);
     saveToStorage();
 }

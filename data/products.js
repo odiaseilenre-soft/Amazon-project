@@ -654,7 +654,24 @@ export const products = [
       "sweaters",
       "hoodies",
       "apparel",
-      "mens"
-    ]
+      "mens"]
+  },{
+    id: 'id01',
+    image: 'images/products/backpack.jpg',
+    name: 'Children Backpack',
+    rating: {
+      stars: 4,
+      count: 300,
+    },
+    priceCents: 1875
+  },{
+    id: 'id02',
+    name: 'Umbrella',
+    image: 'images/products/umbrella.jpg',
+    rating: {
+      stars: 4,
+      count: 450,
+    },
+    priceCents: 350
   }
 ];
