@@ -2,8 +2,9 @@ import {cart, removeFromCart, calculateCartQuantity, updateQuantity, updateDeliv
 import {products, getProduct} from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
+import { calculateDeliveryDate, deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
+import { renderCheckoutHeader } from './checkoutHeader.js';
 
 export function renderOrderSummary() {
 
@@ -23,12 +24,7 @@ export function renderOrderSummary() {
 
         const deliveryOption = getDeliveryOption(deliveryOptionId);
 
-        const today = dayjs();
-        const deliveryDate = today.add(
-            deliveryOption.deliveryDays,
-            'days'
-            );
-        const dateString = deliveryDate.format('dddd, MMMM D');
+        const dateString = calculateDeliveryDate(deliveryOption);
 
         cartSummaryHTML += `
         <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
@@ -80,15 +76,13 @@ export function renderOrderSummary() {
 
         deliveryOptions.forEach((deliveryOption) => {
 
-            const today = dayjs();
-            const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-            const dateString = deliveryDate.format('dddd, MMMM D');
+        const dateString = calculateDeliveryDate(deliveryOption);
 
-            const priceString = deliveryOption.priceCents === 0 ? 'FREE' : `$${formatCurrency(deliveryOption.priceCents)} -`;
+        const priceString = deliveryOption.priceCents === 0 ? 'FREE' : `$${formatCurrency(deliveryOption.priceCents)} -`;
 
-            const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
-            
-            html += `
+        const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
+        
+        html += `
             <div class="delivery-option js-delivery-option"
             data-product-id="${matchingProduct.id}"
             data-delivery-option-id="${deliveryOption.id}">
@@ -119,8 +113,9 @@ export function renderOrderSummary() {
             link.addEventListener('click', () => {
                 const {productId} = link.dataset;
                 removeFromCart(productId);
-                const container = document.querySelector(`.js-cart-item-container-${productId}`);
-                container.remove();
+                //const container = document.querySelector(`.js-cart-item-container-${productId}`);
+                //container.remove();
+                renderOrderSummary();
                 updateCartQuantity();
                 renderPaymentSummary();
             });
@@ -139,7 +134,9 @@ export function renderOrderSummary() {
     function updateCartQuantity() {
     const cartQuantity = calculateCartQuantity();
 
-    document.querySelector('.js-return-to-home-link').innerHTML = cartQuantity + ' ' +'items';
+    //document.querySelector('.js-return-to-home-link').innerHTML = cartQuantity + ' ' +'items';
+    //renderCheckoutHeader(cartQuantity);
+    //document.querySelector('.js-checkout-header').innerHTML = renderCheckoutHeader(cartQuantity) //+ ' ' +'items';
     }
     let newQuantity;
 
